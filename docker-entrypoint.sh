@@ -102,8 +102,12 @@ firebirdSetup() {
   if [[ ! -e "${VOLUME}/etc/firebird.conf" ]]; then
       cp -R "${PREFIX}/skel/etc" "${VOLUME}/"
       file_env 'EnableLegacyClientAuth'
+      file_env 'ENABLE_UDF'
       file_env 'EnableWireCrypt'
       file_env 'DataTypeCompatibility'
+      if [[ ${ENABLE_UDF} == 'true' ]]; then
+          confSet UdfAccess "Restrict UDF"
+      fi 
       if [[ ${EnableLegacyClientAuth} == 'true' ]]; then
           confSet AuthServer "Legacy_Auth, Srp, Win_Sspi"
           confSet AuthClient "Legacy_Auth, Srp, Win_Sspi"
